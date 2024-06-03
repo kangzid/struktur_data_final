@@ -72,7 +72,7 @@ def main_menu():
         elif choice == '2':
             manage_transactions_menu()
         elif choice == '0':
-            print("Terima kasih! Program berhenti.")
+            print("Terima kasih! Program ini telah berhenti.")
             break
         else:
             print("Pilihan tidak valid, silakan coba lagi.")
@@ -205,7 +205,7 @@ def view_all_transactions():
 
 def view_transactions_by_subtotal():
     if not transactions:
-        print("Belum ada transaksi.")
+        print("Maaf Belum ada transaksi.")
     else:
         sorted_transactions = quicksort(transactions)
         for idx, transaction in enumerate(sorted_transactions):

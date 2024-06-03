@@ -7,7 +7,7 @@ from streamlit_option_menu import option_menu
 conn = sqlite3.connect('tugas_final.db')
 c = conn.cursor()
 
-# Membuat tabel jika belum ada ato sblm di query di buat 
+# Membuat tabel jika belum ada ato sblm di query di buat sesuai diagram jenjang 
 c.execute('''CREATE TABLE IF NOT EXISTS stock
              (sku TEXT PRIMARY KEY, name TEXT, price REAL, quantity INTEGER)''')
 c.execute('''CREATE TABLE IF NOT EXISTS transactions
@@ -53,6 +53,7 @@ def restock_item():
             c.execute("UPDATE stock SET quantity=? WHERE sku=?", (new_quantity, sku))
             conn.commit()
             st.success(f"Stok untuk {item[1]} telah ditambahkan sebanyak {additional_quantity}. Total stok sekarang {new_quantity}.")
+            st.snow()
     else:
         st.warning(f"Barang dengan No. SKU {sku} tidak ditemukan. Silakan input data stok barang terlebih dahulu.")
 
@@ -93,34 +94,53 @@ def hapus_items():
 def input_transaksi_baru():
     st.subheader("Input Data Transaksi Baru")
     customer_name = st.text_input("Masukkan nama konsumen: ")
-    
+
+    if 'current_transactions' not in st.session_state:
+        st.session_state.current_transactions = []
+
     sku = st.text_input("Masukkan No. SKU barang yang dibeli: ")
     c.execute("SELECT * FROM stock WHERE sku=?", (sku,))
     item = c.fetchone()
-    
+
     if item is None:
         st.warning("No. SKU yang diinputkan belum terdaftar.")
-        if st.button("Batalkan Transaksi"):
-            return
     else:
         quantity_bought = st.number_input("Masukkan jumlah barang yang dibeli: ", min_value=1, step=1)
-        
+
         if item[3] >= quantity_bought:
-            new_quantity = item[3] - quantity_bought
             subtotal = item[2] * quantity_bought
-            txn_id = membuat_unique_id()
-            c.execute("INSERT INTO transactions (id, customer_name, sku, quantity, subtotal) VALUES (?, ?, ?, ?, ?)",
-                      (txn_id, customer_name, sku, quantity_bought, subtotal))
-            c.execute("UPDATE stock SET quantity=? WHERE sku=?", (new_quantity, sku))
-            conn.commit()
-            st.success(f"Data Transaksi Konsumen Berhasil Diinputkan dengan ID Transaksi {txn_id}")
-            
-            if st.button("Tambahkan Pembelian Lain"):
-                return
+            if st.button("Tambah ke Transaksi"):
+                st.session_state.current_transactions.append({
+                    "customer_name": customer_name,
+                    "sku": sku,
+                    "name": item[1],
+                    "price": item[2],
+                    "quantity": quantity_bought,
+                    "subtotal": subtotal
+                })
+                st.success(f"{item[1]} ditambahkan ke transaksi.")
         else:
             st.warning("Jumlah Stok No.SKU yang Anda beli tidak mencukupi.")
-            if st.button("Batalkan Transaksi"):
-                return
+
+    if st.session_state.current_transactions:
+        st.write("### Daftar Pembelian:")
+        total_amount = 0
+        for idx, txn in enumerate(st.session_state.current_transactions):
+            st.write(f"{idx+1}. {txn['name']} - {txn['quantity']} x {txn['price']} = {txn['subtotal']}")
+            total_amount += txn['subtotal']
+        
+        st.write(f"**Total: {total_amount}**")
+        
+        if st.button("Selesaikan Transaksi"):
+            txn_id = membuat_unique_id()
+            for txn in st.session_state.current_transactions:
+                c.execute("INSERT INTO transactions (id, customer_name, sku, quantity, subtotal) VALUES (?, ?, ?, ?, ?)",
+                          (txn_id, txn["customer_name"], txn["sku"], txn["quantity"], txn["subtotal"]))
+                c.execute("UPDATE stock SET quantity = quantity - ? WHERE sku = ?", (txn["quantity"], txn["sku"]))
+            conn.commit()
+            st.success(f"Transaksi berhasil disimpan dengan ID {txn_id}")
+            st.session_state.current_transactions = []  # Clear the current transaction list
+
 
 def lihat_semua_transaksi():
     st.subheader("Lihat Data Seluruh Transaksi Konsumen")
@@ -210,7 +230,7 @@ def tentang():
         <p>Aplikasi sederhana ini dibuat untuk mengelola data stok barang dan transaksi konsumen, dengan Framework berbasis Python <a href="https://streamlit.io" target="_blank">Streamlit.io</a>.</p>
         <p><strong>Pembuat:</strong> Zidan Alfian M_5230411107</p>
         <p><strong>Kunjungi saya di:</strong></p>
-        <a href="https://github.com/zidanalfianm" style="text-decoration: none;">
+        <a href="https://github.com/kangzid/struktur_data_final" style="text-decoration: none;">
             <img src="https://img.shields.io/badge/GitHub-Profile-blue?logo=github" alt="GitHub">
         </a>
         <a href="https://www.instagram.com/kangz.id/" style="text-decoration: none;">
