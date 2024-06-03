@@ -165,6 +165,7 @@ def hapus_transaksi():
                 st.success(f"Data transaksi dengan ID {', '.join(map(str, delete_ids))} telah dihapus.")
             else:
                 st.warning("Tidak ada transaksi yang dipilih untuk dihapus.")
+                st.snow()
 
 def tentang():
     st.subheader("Tentang Aplikasi")
