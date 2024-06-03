@@ -229,7 +229,7 @@ def tentang():
     <div class="frosted-glass">
         <p>Aplikasi sederhana ini dibuat untuk mengelola data stok barang dan transaksi konsumen, dengan Framework berbasis Python <a href="https://streamlit.io" target="_blank">Streamlit.io</a>.</p>
         <p><strong>Pembuat:</strong> Zidan Alfian M_5230411107</p>
-        <p><strong>Kunjungi saya di:</strong></p>
+        <p><strong>Kunjungi saya di :</strong></p>
         <a href="https://github.com/kangzid/struktur_data_final" style="text-decoration: none;">
             <img src="https://img.shields.io/badge/GitHub-Profile-blue?logo=github" alt="GitHub">
         </a>
