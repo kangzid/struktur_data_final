@@ -124,8 +124,6 @@ def hapus_items():
                 conn.commit()
                 st.success(f"Barang dengan SKU {', '.join(delete_skus)} telah dihapus.")
                 with st.spinner('Loading... Harap Tunggu ya...'):time.sleep(5) 
-                # Simulating a long process
-
                 st.success('Proses Sukses!')
                 
                 st.snow()
