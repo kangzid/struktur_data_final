@@ -18,9 +18,12 @@ Aplikasi ini dibuat untuk mengelola data stok barang dan transaksi konsumen. Dib
   - Lihat Data Seluruh Transaksi Konsumen
   - Lihat Data Transaksi Berdasarkan Subtotal
   - Hapus Transaksi
-
+- **Lihat Statistik Perbulan**:
+  - Lihat Data statistik barang masuk
+  - Lihat Data statistik transaksi 
+    
 - **Tentang**:
-  - Informasi tentang aplikasi dan pembuatnya
+  - Informasi tentang aplikasi 
 
 ## Instalasi
 
