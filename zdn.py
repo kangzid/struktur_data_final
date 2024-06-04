@@ -3,7 +3,9 @@ import sqlite3
 import time
 import random
 from streamlit_option_menu import option_menu
-
+from collections import OrderedDict
+import altair as alt
+import pandas as pd
 # Inisialisasi koneksi ke database via sqlite
 conn = sqlite3.connect('tugas_final.db')
 c = conn.cursor()
@@ -159,7 +161,7 @@ def input_transaksi_baru():
                 })
                 st.success(f"{item[1]} ditambahkan ke transaksi.")
                 with st.spinner('Menunggu...'):time.sleep(5)
-                          # Simulasi proses
+                          # fix no errorrrrr 
                 st.success('Selesai!')
 
                 
@@ -186,7 +188,7 @@ def input_transaksi_baru():
                 c.execute("UPDATE stock SET quantity = quantity - ? WHERE sku = ?", (txn["quantity"], txn["sku"]))
             conn.commit()
             st.success(f"Transaksi berhasil disimpan dengan ID {txn_id}")
-            st.session_state.current_transactions = []  # Clear the current transaction list
+            st.session_state.current_transactions = []  
 
 def lihat_semua_transaksi():
     st.subheader("Lihat Data Seluruh Transaksi Konsumen")
@@ -249,15 +251,36 @@ def statistik_data():
     if not stok_masuk and not transaksi_per_bulan:
         st.warning("Belum ada data stok atau transaksi.")
     else:
-        stok_data = {month: jumlah for month, jumlah in stok_masuk}
-        transaksi_data = {month: jumlah for month, jumlah in transaksi_per_bulan}
+        stok_data = OrderedDict(stok_masuk)
+        transaksi_data = OrderedDict(transaksi_per_bulan)
 
         st.write("### Statistik Barang Masuk per Bulan")
-        st.line_chart(stok_data)
+        if stok_data:
+            stok_df = pd.DataFrame({
+                'Bulan': list(stok_data.keys()),
+                'Jumlah': list(stok_data.values())
+            })
+            stok_chart = alt.Chart(stok_df).mark_bar(strokeWidth=10).encode(
+                x=alt.X('Bulan:T', axis=alt.Axis(labelAngle=-45), title="Bulan"),
+                y=alt.Y('Jumlah:Q', title="Jumlah Barang Masuk")
+            ).properties(width=300, height=400)
+            st.altair_chart(stok_chart)
+        else:
+            st.write("Belum ada data barang masuk.")
 
         st.write("### Statistik Jumlah Pembeli per Bulan")
-        st.line_chart(transaksi_data)
-
+        if transaksi_data:
+            transaksi_df = pd.DataFrame({
+                'Bulan': list(transaksi_data.keys()),
+                'Jumlah': [int(jumlah) for jumlah in transaksi_data.values()]  # Convert kee integer
+            })
+            transaksi_chart = alt.Chart(transaksi_df).mark_bar(strokeWidth=2).encode(
+                x=alt.X('Bulan:T', axis=alt.Axis(labelAngle=-45), title="Bulan"),
+                y=alt.Y('Jumlah:Q', title="Jumlah Pembeli", axis=alt.Axis(format="d"))  #  format dulu ..
+            ).properties(width=300, height=400)
+            st.altair_chart(transaksi_chart)
+        else:
+            st.write("Belum ada data transaksi.")
 def tentang():
     st.subheader("Tentang Aplikasi")
     
