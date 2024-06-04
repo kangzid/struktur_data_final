@@ -1,24 +1,24 @@
 
 ---
 
-# Aplikasi Kelola Stok dan Transaksi
+# 🛄 Aplikasi Kelola Stok dan Transaksi
 
 Aplikasi ini dibuat untuk mengelola data stok barang dan transaksi konsumen. Dibangun menggunakan framework berbasis Python yaitu Streamlit.
 
 ## Fitur
 
-- **Kelola Stok Barang**:
+- **📥Kelola Stok Barang**:
   - Input Data Stok Barang
   - Restok Barang
   - Lihat Semua Barang
   - Hapus Barang
 
-- **Kelola Transaksi Konsumen**:
+- **💸Kelola Transaksi Konsumen**:
   - Input Data Transaksi Baru
   - Lihat Data Seluruh Transaksi Konsumen
   - Lihat Data Transaksi Berdasarkan Subtotal
   - Hapus Transaksi
-- **Lihat Statistik Perbulan**:
+- **📉Lihat Statistik Perbulan**:
   - Lihat Data statistik barang masuk
   - Lihat Data statistik transaksi 
     
