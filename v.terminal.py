@@ -55,7 +55,7 @@ class BST:
             elements.append(node)
             self._inorder(node.right, elements)
 
-# Inisialisasi BST untuk menyimpan data stok barang
+# update bag BST untuk menyimpan data stok barang / fix
 stock_bst = BST()
 transactions = []
 
@@ -68,16 +68,16 @@ def main_menu():
         choice = input("Pilih menu: ")
 
         if choice == '1':
-            manage_stock_menu()
+            kelola_stok_barang()
         elif choice == '2':
-            manage_transactions_menu()
+            kelola_menu_transaksi()
         elif choice == '0':
             print("Terima kasih! Program ini telah berhenti.")
             break
         else:
             print("Pilihan tidak valid, silakan coba lagi.")
 
-def manage_stock_menu():
+def kelola_stok_barang():
     while True:
         print("===== KELOLA STOK BARANG =====")
         print("1.1) Input Data Stok Barang")
@@ -91,7 +91,7 @@ def manage_stock_menu():
         elif choice == '1.2':
             restock_item()
         elif choice == '1.3':
-            view_all_items()
+            lihat_semua_items()
         elif choice == '9':
             break
         else:
@@ -123,7 +123,7 @@ def restock_item():
     else:
         print(f"Barang dengan No. SKU {sku} tidak ditemukan. Silakan input data stok barang terlebih dahulu.")
 
-def view_all_items():
+def lihat_semua_items():
     items = stock_bst.inorder()
     if not items:
         print("Belum ada data stok barang.")
@@ -135,7 +135,7 @@ def view_all_items():
             print("{:<10} {:<20} {:<10} {:<10}".format(item.sku, item.name, item.price, item.quantity))
     input("Tekan Enter untuk kembali ke Sub Menu Kelola Stok Barang...")
 
-def manage_transactions_menu():
+def kelola_menu_transaksi():
     while True:
         print("===== KELOLA TRANSAKSI KONSUMEN =====")
         print("2.1) Input Data Transaksi Baru")
@@ -145,17 +145,17 @@ def manage_transactions_menu():
         choice = input("Pilih sub menu: ")
 
         if choice == '2.1':
-            input_new_transaction()
+            input_transaksi_baru()
         elif choice == '2.2':
-            view_all_transactions()
+            lihat_semua_transaksi()
         elif choice == '2.3':
-            view_transactions_by_subtotal()
+            lihat_transaksi_berdasarkan_subtotal()
         elif choice == '9':
             break
         else:
             print("Pilihan tidak valid, silakan coba lagi.")
 
-def input_new_transaction():
+def input_transaksi_baru():
     customer_name = input("Masukkan nama konsumen: ")
     
     while True:
@@ -194,7 +194,7 @@ def input_new_transaction():
             if continue_transaction == 'N':
                 return
 
-def view_all_transactions():
+def lihat_semua_transaksi():
     if not transactions:
         print("Belum ada transaksi.")
     else:
@@ -203,7 +203,7 @@ def view_all_transactions():
     
     input("Tekan Enter untuk kembali ke Sub Menu Kelola Transaksi Konsumen...")
 
-def view_transactions_by_subtotal():
+def lihat_transaksi_berdasarkan_subtotal():
     if not transactions:
         print("Maaf Belum ada transaksi.")
     else:

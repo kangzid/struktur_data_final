@@ -6,30 +6,33 @@ from streamlit_option_menu import option_menu
 from collections import OrderedDict
 import altair as alt
 import pandas as pd
-# Inisialisasi koneksi ke database via sqlite
+
+# Inisialisasi koneksi ke database via sqlite / hari ke 1
 conn = sqlite3.connect('tugas_final.db')
 c = conn.cursor()
 
-# Membuat tabel jika belum ada
+# test db 
 c.execute('''CREATE TABLE IF NOT EXISTS stock
              (sku TEXT PRIMARY KEY, name TEXT, price REAL, quantity INTEGER, added_date TEXT)''')
 c.execute('''CREATE TABLE IF NOT EXISTS transactions
              (id INTEGER PRIMARY KEY AUTOINCREMENT, customer_name TEXT, sku TEXT, quantity INTEGER, subtotal REAL, transaction_date TEXT)''')
 conn.commit()
-
-# Pastikan kolom added_date ada di tabel stock
+# hari ke2
 c.execute("PRAGMA table_info(stock)")
 columns = [col[1] for col in c.fetchall()]
 if 'added_date' not in columns:
     c.execute("ALTER TABLE stock ADD COLUMN added_date TEXT")
     conn.commit()
-
-# Pastikan kolom transaction_date ada di tabel transactions
+# fixx
 c.execute("PRAGMA table_info(transactions)")
 columns = [col[1] for col in c.fetchall()]
 if 'transaction_date' not in columns:
     c.execute("ALTER TABLE transactions ADD COLUMN transaction_date TEXT")
     conn.commit()
+
+
+def menyaring_input(input_value): #security rdm
+    return input_value.strip().replace("'", "''")
 
 def membuat_unique_id():
     while True:
@@ -54,8 +57,7 @@ def input_stock_data():
                 conn.commit()
                 st.success(f"Data stok untuk {name} telah ditambahkan dengan No. SKU {sku}.")
                 with st.spinner('Loading... Harap Tunggu ya...'):time.sleep(5) 
-                # Simulating a long process
-
+                # animasi sdh fix bugs 
                 st.success('Proses Sukses!')
                 st.balloons()
         else:
@@ -75,9 +77,6 @@ def restock_item():
             c.execute("UPDATE stock SET quantity=? WHERE sku=?", (new_quantity, sku))
             conn.commit()
             st.success(f"Stok untuk {item[1]} telah ditambahkan sebanyak {additional_quantity}. Total stok sekarang {new_quantity}.")
-            
-
-
             progress_bar = st.progress(0)
             status_text = st.empty()
 
@@ -87,8 +86,6 @@ def restock_item():
                 status_text.text(f'Sedang proses... {percent_complete + 1}%')
 
             st.success('Proses Selesai!')
-
-
             st.snow()
     else:
         st.warning(f"Barang dengan No. SKU {sku} tidak ditemukan. Silakan input data stok barang terlebih dahulu.")
@@ -125,7 +122,6 @@ def hapus_items():
                 st.success(f"Barang dengan SKU {', '.join(delete_skus)} telah dihapus.")
                 with st.spinner('Loading... Harap Tunggu ya...'):time.sleep(5) 
                 st.success('Proses Sukses!')
-                
                 st.snow()
             else:
                 st.warning("Tidak ada barang yang dipilih untuk dihapus.")
@@ -136,7 +132,6 @@ def input_transaksi_baru():
 
     if 'current_transactions' not in st.session_state:
         st.session_state.current_transactions = []
-
     sku = st.text_input("Masukkan No. SKU barang yang dibeli: ")
     c.execute("SELECT * FROM stock WHERE sku=?", (sku,))
     item = c.fetchone()
@@ -145,7 +140,6 @@ def input_transaksi_baru():
         st.warning("No. SKU yang diinputkan belum terdaftar.")
     else:
         quantity_bought = st.number_input("Masukkan jumlah barang yang dibeli: ", min_value=1, step=1)
-
         if item[3] >= quantity_bought:
             subtotal = item[2] * quantity_bought
             if st.button("Tambah ke Transaksi"):
@@ -161,9 +155,6 @@ def input_transaksi_baru():
                 with st.spinner('Menunggu...'):time.sleep(5)
                           # fix no errorrrrr 
                 st.success('Selesai!')
-
-                
-                
                 st.snow()
         else:
             st.warning("Jumlah Stok No.SKU yang Anda beli tidak mencukupi.")
@@ -222,7 +213,6 @@ def hapus_transaksi():
         for txn in transactions:
             if st.checkbox(f"ID: {txn[0]}, Nama Konsumen: {txn[1]}, SKU: {txn[2]}, Jumlah: {txn[3]}, Subtotal: {txn[4]}"):
                 delete_ids.append(txn[0])
-        
         if st.button("Hapus Transaksi"):
             if delete_ids:
                 for txn_id in delete_ids:
@@ -231,7 +221,6 @@ def hapus_transaksi():
                 st.success(f"Transaksi dengan ID {', '.join(map(str, delete_ids))} telah dihapus.")
                 with st.spinner('Loading... Harap Tunggu ya...'):time.sleep(5) 
                 # Simulating a long process
-
                 st.success('Proses Sukses!')
                 st.snow()
             else:
@@ -281,7 +270,6 @@ def statistik_data():
             st.write("Belum ada data transaksi.")
 def tentang():
     st.subheader("Tentang Aplikasi")
-    
     html_content = """
     <style>
         .frosted-glass {
@@ -342,7 +330,6 @@ def main():
     with st.sidebar:
         menu = option_menu("Sistem Kelola", ["Kelola Stok Barang", "Kelola Transaksi Konsumen", "Statistik Data", "Tentang"],
                            icons=["boxes", "cash-stack", "bar-chart", "globe"], menu_icon="cast", default_index=0)
-    
     if menu == "Kelola Stok Barang":
         submenu = option_menu("Kelola Stok Barang", ["Input Data Stok Barang", "Restok Barang", "Lihat Semua Barang", "Hapus Barang"],
                               icons=["plus-circle", "arrow-up-circle", "eye", "trash"], menu_icon="cast", default_index=0,
@@ -368,12 +355,9 @@ def main():
             lihat_transaksi_berdasarkan_subtotal()
         elif submenu == "Hapus Transaksi Konsumen":
             hapus_transaksi()
-    
     elif menu == "Statistik Data":
         statistik_data()
-    
     elif menu == "Tentang":
         tentang()
-
 if __name__ == "__main__":
     main()
