@@ -1,3 +1,4 @@
+![Cuplikan layar 2024-06-05 133531](https://github.com/kangzid/struktur_data_final/assets/102877403/fd28548d-7926-4d15-9bcb-fca5ef452b75)
 
 ---
 
