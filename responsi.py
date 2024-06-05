@@ -9,7 +9,7 @@ class Node:
         self.weight = weight
         self.left = None
         self.right = None
-#1day
+#1da
 class BST:
     def __init__(self):
         self.root = None
