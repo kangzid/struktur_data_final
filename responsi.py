@@ -142,7 +142,7 @@ def main():
             print("Anda Sudah Keluar dari program.")
             break
         else:
-            print("Maaf Pilihan Anda tidak valid, silakan coba lagi.")
+            print("Maaf Pilihan Anda tidak valid,silakan coba lagi.")
 
 if __name__ == "__main__":
     main()
