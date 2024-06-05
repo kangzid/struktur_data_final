@@ -24,7 +24,7 @@ Aplikasi ini dibuat untuk mengelola data stok barang dan transaksi konsumen. Dib
   - Lihat Data statistik transaksi 
     
 - **Tentang**:
-  - Informasi tentang aplikasi 
+  - Informasi tentang aplikasi
 
 ## Instalasi
 
