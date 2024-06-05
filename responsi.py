@@ -9,7 +9,7 @@ class Node:
         self.weight = weight
         self.left = None
         self.right = None
-
+#1day
 class BST:
     def __init__(self):
         self.root = None
@@ -62,7 +62,7 @@ class BST:
         nodes = self.in_order_traversal()
         return [node for node in nodes if node['weight'] == weight]
 
-# Data berdasarkan tbl di soal responsinyaa
+# Data berdasarkan tbl di soal responsinyaa jika
 data = [
     (51, "Monsieur", 21, 175, 66),
     (32, "Allan", 25, 188, 74),
@@ -142,7 +142,7 @@ def main():
             print("Anda Sudah Keluar dari program.")
             break
         else:
-            print("Maaf Pilihan Anda tidak valid,silakan coba lagi.")
+            print("Maaf Pilihan Anda tidak valid, silakan coba lagi.")
 
 if __name__ == "__main__":
     main()
