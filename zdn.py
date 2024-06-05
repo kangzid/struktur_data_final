@@ -31,7 +31,7 @@ if 'transaction_date' not in columns:
     conn.commit()
 
 
-def menyaring_input(input_value): #security rdm
+def menyaring_input(input_value): #security rdm menghindari sql injection
     return input_value.strip().replace("'", "''")
 
 def membuat_unique_id():
@@ -81,7 +81,7 @@ def restock_item():
             status_text = st.empty()
 
             for percent_complete in range(100):
-                time.sleep(0.1)  # Simulating work
+                time.sleep(0.1)  # fix tdk ada buh
                 progress_bar.progress(percent_complete + 1)
                 status_text.text(f'Sedang proses... {percent_complete + 1}%')
 
@@ -326,6 +326,12 @@ def tentang():
     """
     
     st.markdown(html_content, unsafe_allow_html=True)
+def welcome_page():
+    st.title("Selamat Datang di Sistem Kelola Barang")
+    st.write("Ini adalah aplikasi sederhana untuk mengelola stok barang dan transaksi konsumen.")
+    st.write("Klik tombol di bawah ini untuk memulai:")
+    if st.button("Mulai"):
+        main()
 def main():
     with st.sidebar:
         menu = option_menu("Sistem Kelola", ["Kelola Stok Barang", "Kelola Transaksi Konsumen", "Statistik Data", "Tentang"],
