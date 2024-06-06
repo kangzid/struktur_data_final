@@ -10,8 +10,7 @@ import pandas as pd
 # Inisialisasi koneksi ke database via sqlite / hari ke 1
 conn = sqlite3.connect('tugas_final.db')
 c = conn.cursor()
-
-# test db 
+# test db via sqllite
 c.execute('''CREATE TABLE IF NOT EXISTS stock
              (sku TEXT PRIMARY KEY, name TEXT, price REAL, quantity INTEGER, added_date TEXT)''')
 c.execute('''CREATE TABLE IF NOT EXISTS transactions
