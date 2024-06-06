@@ -268,6 +268,12 @@ def statistik_data():
             st.altair_chart(transaksi_chart)
         else:
             st.write("Belum ada data transaksi.")
+# Fungsi untuk menampilkan kalender
+def show_calendar():
+    st.subheader("Pilih Tanggal")
+    selected_date = st.date_input("Pilih tanggal")
+    st.write(f"Anda memilih tanggal: {selected_date}")
+
 def tentang():
     st.subheader("Tentang Aplikasi")
     html_content = """
@@ -326,12 +332,8 @@ def tentang():
     """
     
     st.markdown(html_content, unsafe_allow_html=True)
-def welcome_page():
-    st.title("Selamat Datang di Sistem Kelola Barang")
-    st.write("Ini adalah aplikasi sederhana untuk mengelola stok barang dan transaksi konsumen.")
-    st.write("Klik tombol di bawah ini untuk memulai:")
-    if st.button("Mulai"):
-        main()
+
+
 def main():
     with st.sidebar:
         menu = option_menu("Sistem Kelola", ["Kelola Stok Barang", "Kelola Transaksi Konsumen", "Statistik Data", "Tentang"],
@@ -365,5 +367,6 @@ def main():
         statistik_data()
     elif menu == "Tentang":
         tentang()
+    
 if __name__ == "__main__":
     main()
