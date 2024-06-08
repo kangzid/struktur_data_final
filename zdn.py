@@ -6,6 +6,7 @@ from streamlit_option_menu import option_menu
 from collections import OrderedDict
 import altair as alt
 import pandas as pd
+from st_aggrid import AgGrid, GridOptionsBuilder
 
 # Inisialisasi koneksi ke database via sqlite / hari ke 1
 conn = sqlite3.connect('tugas_final.db')
@@ -29,6 +30,7 @@ if 'transaction_date' not in columns:
     c.execute("ALTER TABLE transactions ADD COLUMN transaction_date TEXT")
     conn.commit()
 
+st.set_page_config(page_title="zalfyan.my.id", page_icon="🗳️")
 
 def menyaring_input(input_value): #security rdm menghindari sql injection
     return input_value.strip().replace("'", "''")
@@ -267,11 +269,6 @@ def statistik_data():
             st.altair_chart(transaksi_chart)
         else:
             st.write("Belum ada data transaksi.")
-# Fungsi untuk menampilkan kalender
-def show_calendar():
-    st.subheader("Pilih Tanggal")
-    selected_date = st.date_input("Pilih tanggal")
-    st.write(f"Anda memilih tanggal: {selected_date}")
 
 def tentang():
     st.subheader("Tentang Aplikasi")
