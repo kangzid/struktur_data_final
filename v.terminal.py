@@ -1,5 +1,4 @@
 #404
-
 class TreeNode:
     def __init__(self, sku, name, price, quantity):
         self.sku = sku
