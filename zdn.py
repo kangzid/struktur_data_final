@@ -6,7 +6,7 @@ from streamlit_option_menu import option_menu
 from collections import OrderedDict
 import altair as alt
 import pandas as pd
-from st_aggrid import AgGrid, GridOptionsBuilder
+#from st_aggrid import AgGrid, GridOptionsBuilder
 
 # Inisialisasi koneksi ke database via sqlite / hari ke 1
 conn = sqlite3.connect('tugas_final.db')
